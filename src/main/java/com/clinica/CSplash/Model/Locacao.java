@@ -33,5 +33,9 @@ public class Locacao {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @ManyToOne
+    @JoinColumn(name = "carro_id")
+    private Carro carro;
+
     private StatusLocacao statusLocacao;
 }

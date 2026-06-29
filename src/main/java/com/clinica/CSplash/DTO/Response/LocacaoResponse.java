@@ -1,5 +1,6 @@
 package com.clinica.CSplash.DTO.Response;
 
+import com.clinica.CSplash.Model.Carro;
 import com.clinica.CSplash.Model.Enum.StatusLocacao;
 import com.clinica.CSplash.Model.Usuario;
 
@@ -13,6 +14,7 @@ public record LocacaoResponse(
         LocalDateTime dataFim,
         BigDecimal preco,
         Usuario usuario,
+        Carro carro,
         StatusLocacao statusLocacao
 ) {
 }

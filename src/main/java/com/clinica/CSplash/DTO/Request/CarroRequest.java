@@ -14,5 +14,7 @@ public record CarroRequest(
         String placa,
         BigDecimal preco,
         StatusCarro statusCarro
-) {
+)
+
+{
 }
