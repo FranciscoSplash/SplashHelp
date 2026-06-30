@@ -12,8 +12,7 @@ import java.util.UUID;
 @Repository
 public interface LocacaoRepository extends JpaRepository<Locacao, UUID> {
 
-    //verificar se usuario esta ativo
-    boolean usuarioActivo(StatusUsuario statusUsuario);
+
 
 
 

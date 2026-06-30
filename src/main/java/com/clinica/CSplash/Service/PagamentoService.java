@@ -25,7 +25,7 @@ public class PagamentoService {
     @Autowired
     private LocacaoRepository locacaoRepository;
 
-    public PagamentoService gerarIntencaoPagamento(PagamentoRequest request){
+    public PagamentoResponse gerarIntencaoPagamento(PagamentoRequest request){
 
         // 1. Busca a locação para a qual o cliente está tentando pagar
         // (Assumindo que seu request traz o id da locação: request.locacaoId())

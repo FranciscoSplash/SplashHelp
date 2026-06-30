@@ -37,5 +37,7 @@ public class Locacao {
     @JoinColumn(name = "carro_id")
     private Carro carro;
 
+
+    @Enumerated(EnumType.STRING)
     private StatusLocacao statusLocacao;
 }

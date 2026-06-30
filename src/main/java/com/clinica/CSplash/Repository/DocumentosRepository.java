@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface DocumentosRepository extends JpaRepository<Documentos, UUID> {
-    boolean existisNumeroCnh(String numeroCnh);
+    boolean existsByNumeroCnh(String numeroCnh);
 
-    //Verificar valildadeCnheStatus
-    boolean valildadeCnheStatus(String numeroCnh, StatusDoc statusDoc);
-}
+    }

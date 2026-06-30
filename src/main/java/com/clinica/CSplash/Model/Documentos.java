@@ -20,6 +20,8 @@ public class Documentos {
 
     private String numeroCnh;
     private LocalDate validade;
+
+    @Enumerated(EnumType.STRING)
     private StatusDoc statusDoc;
 
     @OneToOne

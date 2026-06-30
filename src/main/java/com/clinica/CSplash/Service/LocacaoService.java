@@ -2,14 +2,12 @@ package com.clinica.CSplash.Service;
 
 import com.clinica.CSplash.DTO.Request.LocacaoRequest;
 import com.clinica.CSplash.DTO.Response.LocacaoResponse;
-import com.clinica.CSplash.Model.Carro;
+import com.clinica.CSplash.DTO.Response.UsuarioResponse;
+import com.clinica.CSplash.Model.*;
 import com.clinica.CSplash.Model.Enum.StatusCarro;
 import com.clinica.CSplash.Model.Enum.StatusLocacao;
 import com.clinica.CSplash.Model.Enum.StatusPagamento;
 import com.clinica.CSplash.Model.Enum.StatusUsuario;
-import com.clinica.CSplash.Model.Locacao;
-import com.clinica.CSplash.Model.Pagamento;
-import com.clinica.CSplash.Model.Usuario;
 import com.clinica.CSplash.Repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +161,14 @@ public LocacaoResponse cancelarLocacao(UUID id){
                 locacao.getDataInicio(),
                 locacao.getDataFim(),
                 locacao.getPreco(),
-                locacao.getUsuario(),
+                new UsuarioResponse(
+                        locacao.getUsuario().getId(),
+                        locacao.getUsuario().getNome(),
+                        locacao.getUsuario().getEmail(),
+                        locacao.getUsuario().getTelefone(),
+                        locacao.getUsuario().getCargo(),
+                        locacao.getUsuario().getStatusUsuario()
+                ),
                 locacao.getCarro(),
                 locacao.getStatusLocacao()
         );

@@ -53,8 +53,22 @@ public class CarroService {
         return toResponse(carro);
     }
 
+    public  CarroResponse atualizarCarro(UUID id, CarroRequest request) {
+        Carro carro = carroRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id inexistente"));
 
-    public  void apgarCarro(UUID id){
+        carro.setCategoria(request.categoria());
+        carro.setMarca(request.marca());
+        carro.setCor(request.cor());
+        carro.setModelo(request.modelo());
+        carro.setAno(request.ano());
+        carro.setPlaca(request.placa());
+        carro.setPrecoDia(request.preco());
+        carro.setStatusCarro(StatusCarro.LIVRE);
+
+        return toResponse(carroRepository.save(carro));
+
+    }
+        public  void apgarCarro(UUID id){
         Carro carro=carroRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Id inexistente"));
 
         carroRepository.delete(carro);

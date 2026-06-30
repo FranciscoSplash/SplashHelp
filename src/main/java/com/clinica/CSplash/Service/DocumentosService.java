@@ -19,7 +19,7 @@ public class DocumentosService {
 
     public DocumentResponse criarDocumento(DocumentosRequest request){
 
-        if(documentosRepository.existisNumeroCnh(request.numeroCnh())){
+        if(documentosRepository.existsByNumeroCnh(request.numeroCnh())){
             throw new IllegalArgumentException("CNH ja cadastrado");
         }
 

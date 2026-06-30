@@ -21,7 +21,7 @@ public class CategoriaService {
     public CategoriaResponse criarCategoria(CategoriaRequest request){
 
 
-        if(categoriaRepository.existisNomeDeCategoria(request.nomeDaCategoria())){
+        if(categoriaRepository.existsByNomeDaCategoria(request.nomeDaCategoria())){
             throw new IllegalArgumentException("Nome da Categoria ja existente");
         }
 

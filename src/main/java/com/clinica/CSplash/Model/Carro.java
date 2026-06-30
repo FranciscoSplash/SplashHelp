@@ -35,6 +35,7 @@ public class Carro {
 
     private BigDecimal precoDia;
 
+    @Enumerated(EnumType.STRING)
     private StatusCarro statusCarro;
 
 }

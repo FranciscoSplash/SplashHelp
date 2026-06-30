@@ -13,7 +13,7 @@ public record LocacaoResponse(
         LocalDateTime dataInicio,
         LocalDateTime dataFim,
         BigDecimal preco,
-        Usuario usuario,
+        UsuarioResponse usuario,
         Carro carro,
         StatusLocacao statusLocacao
 ) {

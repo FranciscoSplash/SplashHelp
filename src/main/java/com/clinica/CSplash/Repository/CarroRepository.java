@@ -13,6 +13,4 @@ public interface CarroRepository extends JpaRepository<Carro, UUID> {
     //verifica se a placa do carro ja existe na base de dados
     boolean existsByPlaca(String placa);
 
-    //se o carro estiver Ocupado
-    boolean existsByStatusCarrosIsOcupao(StatusCarro statusCarro);
-}
+    }

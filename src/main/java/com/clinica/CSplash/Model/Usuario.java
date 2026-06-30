@@ -35,6 +35,6 @@ public class Usuario {
     private Cargo cargo;
 
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private StatusUsuario statusUsuario;
 }

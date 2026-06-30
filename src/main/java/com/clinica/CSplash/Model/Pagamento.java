@@ -22,6 +22,7 @@ public class Pagamento {
     @JoinColumn(name="locacao_id")
     private Locacao locacao;
 
+    @Enumerated(EnumType.STRING)
     private MetodoPagamento metodoPagamento;
 
     private StatusPagamento statusPagamento;
