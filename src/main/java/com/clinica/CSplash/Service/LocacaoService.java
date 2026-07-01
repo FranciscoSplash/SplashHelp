@@ -39,16 +39,17 @@ public class LocacaoService {
 
     public LocacaoResponse criarLocacao(LocacaoRequest request) {
 
-        Usuario usuario = usuarioRepository.findById(request.usuario().getId())
+        Usuario usuario = usuarioRepository.findById(request.usuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
 
-        Carro carro = carroRepository.findById(request.carro().getId())
+        Carro carro = carroRepository.findById(request.carroId())
                 .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
 
         if (usuario.getStatusUsuario() != StatusUsuario.ATIVO) {
             throw new IllegalArgumentException("O usuário precisa estar ativo para alugar");
         }
 
+        System.out.println(carro.getStatusCarro());
         if (carro.getStatusCarro() != StatusCarro.LIVRE) {
             throw new IllegalArgumentException("Este carro já está ocupado ou em manutenção.");
         }
@@ -70,19 +71,19 @@ public class LocacaoService {
         locacao.setPreco(resultado);
         locacao.setStatusLocacao(StatusLocacao.PENDENTE);
 
-        carro.setStatusCarro(StatusCarro.ALUGADO);
+        carro.setStatusCarro(StatusCarro.LIVRE);
         carroRepository.save(carro);
 
         return toResponse(locacaoRepository.save(locacao));
     }
     public LocacaoResponse atualizarlocacao(UUID id, LocacaoRequest request){
-        Usuario usuario=usuarioRepository.findById(request.usuario().getId())
+        Usuario usuario=usuarioRepository.findById(request.usuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
 
-        Carro carro = carroRepository.findById(request.carro().getId())
+        Carro carro = carroRepository.findById(request.carroId())
                 .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
 
-        Locacao locacao=locacaoRepository.findById(request.usuario().getId())
+        Locacao locacao=locacaoRepository.findById(request.usuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
 
         locacao.setUsuario(usuario);
@@ -94,18 +95,21 @@ public class LocacaoService {
 
         return  toResponse(locacaoRepository.save(locacao));
     }
-    public LocacaoResponse confirmarRetirada(UUID id){
+    public LocacaoResponse confirmarRetirada(UUID id, LocacaoRequest request){
         Locacao local =locacaoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
-        Pagamento pagamento=pagamentoRepository.findByLocacao(local)
-                .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
+                .orElseThrow(() -> new EntityNotFoundException("Locacão não encontrado"));
 
-        Carro carro=local.getCarro();
+     Pagamento pagamento=pagamentoRepository.findByLocacao(local)
+             .orElseThrow(() -> new EntityNotFoundException("Pagamento não encontrado"));
+
+       Carro carro=local.getCarro();
 
 
         if(pagamento.getStatusPagamento()!=StatusPagamento.PAGO){
-            throw new RuntimeException("Ainda nao pago");
+           throw new RuntimeException("Ainda nao pago");
         }
+
+
         carro.setStatusCarro(StatusCarro.ALUGADO);
         carroRepository.save(carro);
         local.setStatusLocacao(StatusLocacao.ATIVO);

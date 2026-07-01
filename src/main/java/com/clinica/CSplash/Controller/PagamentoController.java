@@ -30,13 +30,13 @@ public class PagamentoController {
 
 
     @PostMapping("/pagar")
-    public ResponseEntity<PagamentoResponse> gerarPagamento(@RequestBody PagamentoRequest request) {
+    public ResponseEntity<PagamentoResponse> gerarPagamento( @RequestBody PagamentoRequest request) {
         return new ResponseEntity<>(pagamentoService.gerarIntencaoPagamento(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/confirmar")
-    public ResponseEntity<PagamentoResponse> confirmarPagamento(@PathVariable UUID id) {
-        return new ResponseEntity<>(pagamentoService.confirmarPagamento(id), HttpStatus.OK);
+    public ResponseEntity<PagamentoResponse> confirmarPagamento(@PathVariable UUID id ,@RequestBody PagamentoRequest request) {
+        return new ResponseEntity<>(pagamentoService.confirmarPagamento(id, request), HttpStatus.OK);
 
     }
 }

@@ -47,8 +47,8 @@ public class LocacaoController {
     }
 
     @PutMapping("/{id}/retirar")
-    public ResponseEntity<LocacaoResponse> confirmarRetirada(@PathVariable UUID id) {
-        return new ResponseEntity<>(locacaoService.confirmarRetirada(id), HttpStatus.OK);
+    public ResponseEntity<LocacaoResponse> confirmarRetirada(@PathVariable  UUID id, @RequestBody LocacaoRequest request) {
+        return new ResponseEntity<>(locacaoService.confirmarRetirada(id,request), HttpStatus.OK);
     }
 
     @PutMapping("/{id}/devolver")

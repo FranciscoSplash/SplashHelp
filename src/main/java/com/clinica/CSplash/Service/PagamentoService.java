@@ -29,7 +29,8 @@ public class PagamentoService {
 
         // 1. Busca a locação para a qual o cliente está tentando pagar
         // (Assumindo que seu request traz o id da locação: request.locacaoId())
-        Locacao locacao=locacaoRepository.findById(request.locacao().getId()).orElseThrow(()->new EntityNotFoundException("Id Inexistente"));
+        Locacao locacao=locacaoRepository.findById(request.locacaoId())
+                .orElseThrow(()->new EntityNotFoundException("Locacao não encontrada"));
 
         Pagamento pagamento=new Pagamento();
         pagamento.setLocacao(locacao);
@@ -38,7 +39,7 @@ public class PagamentoService {
 
         return toResponse(pagamentoRepository.save(pagamento));
     }
-    public PagamentoResponse confirmarPagamento(UUID id){
+    public PagamentoResponse confirmarPagamento(UUID id, PagamentoRequest request){
         Pagamento pagamento=pagamentoRepository.findById(id)
                 .orElseThrow(()->new EntityNotFoundException("Id Inexistente"));
 

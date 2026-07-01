@@ -11,6 +11,6 @@ public record DocumentResponse(
         String numeroCnh,
         LocalDate validade,
         StatusDoc statusDoc,
-        Usuario usuario
+        UsuarioResponse usuario
 ) {
 }

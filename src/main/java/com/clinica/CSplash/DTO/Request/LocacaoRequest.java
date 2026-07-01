@@ -7,13 +7,14 @@ import com.clinica.CSplash.Model.Usuario;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record LocacaoRequest(
         LocalDateTime dataInicio,
         LocalDateTime dataFim,
         BigDecimal preco,
-        Usuario usuario,
-        Carro carro,
+        UUID usuarioId,
+        UUID carroId,
         StatusLocacao statusLocacao
 ) {
 }

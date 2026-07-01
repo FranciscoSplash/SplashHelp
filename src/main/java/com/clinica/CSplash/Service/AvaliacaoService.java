@@ -4,6 +4,7 @@ package com.clinica.CSplash.Service;
 import com.clinica.CSplash.DTO.Request.AvalicaoRequest;
 import com.clinica.CSplash.DTO.Response.AvaliacaoResponse;
 import com.clinica.CSplash.Model.Avaliacao;
+import com.clinica.CSplash.Model.Locacao;
 import com.clinica.CSplash.Repository.AvaliacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,7 @@ public class AvaliacaoService {
     public AvaliacaoResponse criarAvalicao(AvalicaoRequest avalicaoRequest){
         Avaliacao avaliacao=new Avaliacao();
 
-        avaliacao.setLocacao(avalicaoRequest.locacao());
-        avaliacao.setUsuario(avalicaoRequest.usuario());
+        avalicaoRequest.locacaoId();
         avaliacao.setNota(avalicaoRequest.nota());
         avaliacao.setComentario(avalicaoRequest.comentario());
 
