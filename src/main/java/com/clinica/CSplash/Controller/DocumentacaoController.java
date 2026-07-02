@@ -6,6 +6,8 @@ import com.clinica.CSplash.DTO.Response.CategoriaResponse;
 import com.clinica.CSplash.DTO.Response.DocumentResponse;
 import com.clinica.CSplash.Service.CategoriaService;
 import com.clinica.CSplash.Service.DocumentosService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,27 +27,37 @@ public class DocumentacaoController {
 
 
     @GetMapping
+
+    @Operation(summary = "Listar", description = "Lista todos os documentos")
     public ResponseEntity<List<DocumentResponse>> listartodosDocumentos() {
         List<DocumentResponse> listarDocumentos = documentosService.listar();
         return new ResponseEntity<>(listarDocumentos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+
+    @Operation(summary = "Listar Id", description = "Listar por id Documento")
     public ResponseEntity<DocumentResponse> listarPorId(@PathVariable UUID id) {
         return new ResponseEntity<>(documentosService.litarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<DocumentResponse> criarDocumento(@RequestBody DocumentosRequest request) {
+
+    @Operation(summary = "Criar", description = "Cadastrar Documentos")
+    public ResponseEntity<DocumentResponse> criarDocumento(@RequestBody @Valid DocumentosRequest request) {
         return new ResponseEntity<>(documentosService.criarDocumento(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+
+    @Operation(summary = "Atulizar", description = "Atualizar Documentos")
     public ResponseEntity<DocumentResponse> atualizarDocumentos(@PathVariable UUID id, @RequestBody DocumentosRequest request) {
         return new ResponseEntity<>(documentosService.atualizarDocumento(id, request), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
+
+    @Operation(summary = "Apagar", description = "Atualizar Documentos")
     public ResponseEntity<Void> apagarCarro(@PathVariable UUID id) {
         documentosService.apagar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -11,9 +11,9 @@ import java.util.UUID;
 public record AvalicaoRequest(
         UUID locacaoId,
 
-        @Max(10)
+        @Max(value = 10, message = "no maximo a nota vai ate 10")
         Integer nota,
-        @Size(min = 5, max=100)
+        @Size(min = 5, max=100, message = "No maximo so ate 100 Caracteres")
         String comentario
 ) {
 }

@@ -3,6 +3,8 @@ package com.clinica.CSplash.Controller;
 import com.clinica.CSplash.DTO.Request.PagamentoRequest;
 import com.clinica.CSplash.DTO.Response.PagamentoResponse;
 import com.clinica.CSplash.Service.PagamentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +25,25 @@ public class PagamentoController {
 
 
     @GetMapping
+
+    @Operation(summary = "Listar", description = "Listar todos os Pagamentos")
     public ResponseEntity<List<PagamentoResponse>> listartodosPagamentos() {
         List<PagamentoResponse> listarPagamentos = pagamentoService.listarTodosPagamentos();
         return new ResponseEntity<>(listarPagamentos, HttpStatus.OK);
     }
 
 
-    @PostMapping("/pagar")
-    public ResponseEntity<PagamentoResponse> gerarPagamento( @RequestBody PagamentoRequest request) {
+    @PostMapping("/gerarpagamento")
+
+    @Operation(summary = "Criar", description = "Gerar Pagamento")
+    public ResponseEntity<PagamentoResponse> gerarPagamento( @Valid @RequestBody PagamentoRequest request) {
         return new ResponseEntity<>(pagamentoService.gerarIntencaoPagamento(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/confirmar")
-    public ResponseEntity<PagamentoResponse> confirmarPagamento(@PathVariable UUID id ,@RequestBody PagamentoRequest request) {
+
+    @Operation(summary = "Confirmar", description = "Confirmar Pagamento")
+    public ResponseEntity<PagamentoResponse> confirmarPagamento(@PathVariable UUID id ,@Valid @RequestBody PagamentoRequest request) {
         return new ResponseEntity<>(pagamentoService.confirmarPagamento(id, request), HttpStatus.OK);
 
     }

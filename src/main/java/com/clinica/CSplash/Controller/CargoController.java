@@ -7,6 +7,8 @@ import com.clinica.CSplash.DTO.Response.CargoResponse;
 import com.clinica.CSplash.DTO.Response.UsuarioResponse;
 import com.clinica.CSplash.Service.CargoService;
 import com.clinica.CSplash.Service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +28,27 @@ public class CargoController {
 
 
     @GetMapping
+    @Operation(summary = "listar ", description = "Lista Cargos")
     public ResponseEntity<List<CargoResponse>> listarCargos(){
         return new ResponseEntity<>(cargoService.listarCargo(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
+    @Operation(summary = "listar por id", description = "Lista os cargos existente por id")
     public ResponseEntity<CargoResponse> listarPorId(@PathVariable UUID id) {
         return new ResponseEntity<>(cargoService.listarPorId(id), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<CargoResponse> criarCargo(@RequestBody CargoRequest request) {
+    @Operation(summary = "criar", description = "Criar cargos")
+    public ResponseEntity<CargoResponse> criarCargo(@RequestBody @Valid CargoRequest request) {
         return new ResponseEntity<>(cargoService.criarCargo(request), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<CargoResponse> atualizarCargo(@PathVariable UUID id, @RequestBody CargoRequest request) {
+    @Operation(summary = "Atualizar", description = "Atualiza os cargos por id")
+    public ResponseEntity<CargoResponse> atualizarCargo(@PathVariable UUID id,  @RequestBody CargoRequest request) {
         return new ResponseEntity<>(cargoService.atualizarCargo(id, request), HttpStatus.ACCEPTED);
     }
 
+    @Operation(summary = "Apagar por id", description = "Apaga Cargos por id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagarCargo(@PathVariable UUID id) {
         cargoService.apagarCargo(id);
