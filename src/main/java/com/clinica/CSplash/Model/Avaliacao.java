@@ -3,7 +3,9 @@ package com.clinica.CSplash.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -24,7 +26,11 @@ public class Avaliacao {
             @JoinColumn(name = "usuario_id")
             private Usuario Usuario;
 
+
             private Integer nota;
 
             private String comentario;
+
+             @CreationTimestamp
+             private LocalDateTime criadoEm;
 }

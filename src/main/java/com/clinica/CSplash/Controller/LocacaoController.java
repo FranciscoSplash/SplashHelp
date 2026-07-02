@@ -51,14 +51,24 @@ public class LocacaoController {
         return new ResponseEntity<>(locacaoService.confirmarRetirada(id,request), HttpStatus.OK);
     }
 
+    @GetMapping("/retirar/lista")
+    public ResponseEntity<List<LocacaoResponse>>ListarConfirmadosRetirada() {
+        return new ResponseEntity<>(locacaoService.listarConfirmadosLocacao(), HttpStatus.ACCEPTED);
+    }
+
     @PutMapping("/{id}/devolver")
-    public ResponseEntity<LocacaoResponse> concluirDevolucao(@PathVariable UUID id) {
-        return new ResponseEntity<>(locacaoService.concluirDevolucao(id), HttpStatus.OK);
+    public ResponseEntity<LocacaoResponse> concluirDevolucao(@PathVariable UUID id, @RequestBody LocacaoRequest request) {
+        return new ResponseEntity<>(locacaoService.concluirDevolucao(id, request), HttpStatus.OK);
     }
 
     @PutMapping("/{id}/cancelar")
-    public ResponseEntity<LocacaoResponse> cancelarLocacao(@PathVariable UUID id) {
-        return new ResponseEntity<>(locacaoService.cancelarLocacao(id), HttpStatus.OK);
+    public ResponseEntity<LocacaoResponse> cancelarLocacao(@PathVariable UUID id, @RequestBody LocacaoRequest request) {
+        return new ResponseEntity<>(locacaoService.cancelarLocacao(id, request), HttpStatus.OK);
+    }
+
+    @GetMapping("/cancelar/listar")
+    public ResponseEntity <List<LocacaoResponse>>ListarCancelados() {
+        return new ResponseEntity<>(locacaoService.listarCancedosLocacao(), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

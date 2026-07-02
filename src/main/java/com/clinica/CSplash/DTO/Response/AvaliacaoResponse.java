@@ -3,6 +3,7 @@ package com.clinica.CSplash.DTO.Response;
 import com.clinica.CSplash.Model.Locacao;
 import com.clinica.CSplash.Model.Usuario;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record AvaliacaoResponse(
@@ -10,6 +11,7 @@ public record AvaliacaoResponse(
         Locacao locacao,
         Usuario usuario,
         Integer nota,
-        String comentario
+        String comentario,
+        LocalDateTime criadoEm
 ) {
 }

@@ -48,7 +48,8 @@ public class AvaliacaoService {
                 avaliacao.getLocacao(),
                 avaliacao.getUsuario(),
                 avaliacao.getNota(),
-                avaliacao.getComentario()
+                avaliacao.getComentario(),
+                avaliacao.getCriadoEm()
 
 
 

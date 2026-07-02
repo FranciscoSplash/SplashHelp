@@ -106,7 +106,7 @@ public class LocacaoService {
 
 
         if(pagamento.getStatusPagamento()!=StatusPagamento.PAGO){
-           throw new RuntimeException("Ainda nao pago");
+           throw new RuntimeException("Pagamento não Pago");
         }
 
 
@@ -117,9 +117,13 @@ public class LocacaoService {
          return toResponse(locacaoRepository.save(local));
 
     }
-    public LocacaoResponse concluirDevolucao(UUID id){
+
+    public List<LocacaoResponse> listarConfirmadosLocacao(){
+        return locacaoRepository.findAll().stream().map(this::toResponse).toList();
+    }
+    public LocacaoResponse concluirDevolucao(UUID id, LocacaoRequest request){
         Locacao locacao=locacaoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
+                .orElseThrow(() -> new EntityNotFoundException("Locação Não encontrada"));
 
         locacao.setStatusLocacao(StatusLocacao.CONCLUIDO);
 
@@ -129,9 +133,9 @@ public class LocacaoService {
 
         return toResponse(locacaoRepository.save(locacao));
     }
-public LocacaoResponse cancelarLocacao(UUID id){
+public LocacaoResponse cancelarLocacao(UUID id, LocacaoRequest request){
     Carro carro=carroRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
+            .orElseThrow(() -> new EntityNotFoundException("Carro não Encontrado"));
 
     carro.setStatusCarro(StatusCarro.LIVRE);
     carroRepository.save(carro);
@@ -143,6 +147,9 @@ public LocacaoResponse cancelarLocacao(UUID id){
 
     return toResponse(locacaoRepository.save(locacao));
 }
+    public List<LocacaoResponse> listarCancedosLocacao(){
+        return locacaoRepository.findAll().stream().map(this::toResponse).toList();
+    }
     public List<LocacaoResponse> listarLocacao(){
         return locacaoRepository.findAll().stream().map(this::toResponse).toList();
     }
