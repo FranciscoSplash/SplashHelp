@@ -1,6 +1,8 @@
 package com.clinica.CSplash.Service;
 
+import com.clinica.CSplash.Controller.CanccelarLocacaoRequest;
 import com.clinica.CSplash.DTO.Request.LocacaoRequest;
+import com.clinica.CSplash.DTO.Request.RetirarRequest;
 import com.clinica.CSplash.DTO.Response.LocacaoResponse;
 import com.clinica.CSplash.DTO.Response.UsuarioResponse;
 import com.clinica.CSplash.Model.*;
@@ -35,6 +37,8 @@ public class LocacaoService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+
 
 
     public LocacaoResponse criarLocacao(LocacaoRequest request) {
@@ -95,7 +99,7 @@ public class LocacaoService {
 
         return  toResponse(locacaoRepository.save(locacao));
     }
-    public LocacaoResponse confirmarRetirada(UUID id, LocacaoRequest request){
+    public LocacaoResponse confirmarRetirada(UUID id, RetirarRequest request){
         Locacao local =locacaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Locacão não encontrado"));
 
@@ -133,15 +137,15 @@ public class LocacaoService {
 
         return toResponse(locacaoRepository.save(locacao));
     }
-public LocacaoResponse cancelarLocacao(UUID id, LocacaoRequest request){
-    Carro carro=carroRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Carro não Encontrado"));
+public LocacaoResponse cancelarLocacao(UUID id, CanccelarLocacaoRequest canccelarLocacaoRequest){
 
-    carro.setStatusCarro(StatusCarro.LIVRE);
-    carroRepository.save(carro);
 
     Locacao locacao=locacaoRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Id Inexistente"));
+    Carro carro=locacao.getCarro();
+
+
+    carroRepository.save(carro);
 
     locacao.setStatusLocacao(StatusLocacao.CANCELADO);
 

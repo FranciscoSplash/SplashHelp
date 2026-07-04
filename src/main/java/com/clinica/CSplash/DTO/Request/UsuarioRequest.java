@@ -29,7 +29,7 @@ public record UsuarioRequest(
          String telefone,
 
         @NotNull(message = "Campo obrigatorio")
-        Cargo cargo,
+        CargoRequest cargo,
 
         @NotNull(message = "Campo obrigatorio")
         StatusUsuario statusUsuario

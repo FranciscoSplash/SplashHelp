@@ -8,6 +8,7 @@ import com.clinica.CSplash.Repository.CargoRepository;
 import com.clinica.CSplash.Repository.CarroRepository;
 import com.clinica.CSplash.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class UsuarioService {
     @Autowired
     private CargoRepository cargoRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public List<UsuarioResponse> listarUsuario(){
         return usuarioRepository.findAll().stream().map(this::toResponse).toList();
@@ -35,13 +39,13 @@ public class UsuarioService {
     }
     public UsuarioResponse criarUsuario(UsuarioRequest request){
 
-        Cargo cargo=cargoRepository.findById(request.cargo().getId())
+        Cargo cargo=cargoRepository.findById(request.cargo().id())
                 .orElseThrow(()->new RuntimeException("ID Inexistente"));
 
         Usuario user=new Usuario();
         user.setNome(request.nome());
         user.setEmail(request.email());
-        user.setSenha(request.senha());
+        user.setSenha(passwordEncoder.encode(request.senha()));
         user.setTelefone(request.telefone());
         user.setCargo(cargo);
         user.setStatusUsuario(request.statusUsuario());
@@ -53,12 +57,12 @@ public class UsuarioService {
         Usuario user=usuarioRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Id inexistente"));
 
-        Cargo cargo=cargoRepository.findById(request.cargo().getId())
+        Cargo cargo=cargoRepository.findById(request.cargo().id())
                 .orElseThrow(()->new RuntimeException("ID Inexistente"));
 
         user.setNome(request.nome());
         user.setEmail(request.email());
-        user.setSenha(request.senha());
+        user.setSenha(passwordEncoder.encode(request.senha()));
         user.setTelefone(request.telefone());
         user.setCargo(cargo);
         user.setStatusUsuario(request.statusUsuario());

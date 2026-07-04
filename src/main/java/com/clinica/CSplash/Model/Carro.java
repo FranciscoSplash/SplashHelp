@@ -47,4 +47,6 @@ public class Carro {
     @NotNull(message = "Campo obrigatorio")
     private StatusCarro statusCarro;
 
+
+
 }

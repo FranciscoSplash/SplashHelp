@@ -2,6 +2,7 @@ package com.clinica.CSplash.Controller;
 
 import com.clinica.CSplash.DTO.Request.DocumentosRequest;
 import com.clinica.CSplash.DTO.Request.LocacaoRequest;
+import com.clinica.CSplash.DTO.Request.RetirarRequest;
 import com.clinica.CSplash.DTO.Response.DocumentResponse;
 import com.clinica.CSplash.DTO.Response.LocacaoResponse;
 import com.clinica.CSplash.Service.DocumentosService;
@@ -59,7 +60,7 @@ public class LocacaoController {
     @PutMapping("/{id}/retirar")
 
     @Operation(summary = "Confirmar", description = "Confirmar Retirada do CArro")
-    public ResponseEntity<LocacaoResponse> confirmarRetirada(@PathVariable  UUID id, @RequestBody LocacaoRequest request) {
+    public ResponseEntity<LocacaoResponse> confirmarRetirada(@PathVariable  UUID id, @RequestBody RetirarRequest request) {
         return new ResponseEntity<>(locacaoService.confirmarRetirada(id,request), HttpStatus.OK);
     }
 
@@ -80,7 +81,7 @@ public class LocacaoController {
     @PutMapping("/{id}/cancelar")
 
     @Operation(summary = "Cancelar", description = "Cancelar Locacao")
-    public ResponseEntity<LocacaoResponse> cancelarLocacao(@PathVariable UUID id, @RequestBody LocacaoRequest request) {
+    public ResponseEntity<LocacaoResponse> cancelarLocacao(@PathVariable UUID id, @RequestBody CanccelarLocacaoRequest request) {
         return new ResponseEntity<>(locacaoService.cancelarLocacao(id, request), HttpStatus.OK);
     }
 

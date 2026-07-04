@@ -49,7 +49,7 @@ public class GlobalExceptionsHandaller {
 
     }
     // QUALQUER outro erro bizarro que quebre o Java
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public ResponseEntity<DadosValidacao> tratarErroGerl500(Exception e) {
 
         DadosValidacao validacao = new DadosValidacao(
@@ -63,7 +63,7 @@ public class GlobalExceptionsHandaller {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(validacao);
 
     }
-
+*/
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
     public ResponseEntity<java.util.Map<String,String>>tratarValidacao(org.springframework.web.bind.MethodArgumentNotValidException e){
         java.util.Map<String, String> erro= new java.util.HashMap<>();
