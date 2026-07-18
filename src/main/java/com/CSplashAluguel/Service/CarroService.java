@@ -2,11 +2,13 @@ package com.CSplashAluguel.Service;
 
 import com.CSplashAluguel.DTO.Request.CarroRequest;
 import com.CSplashAluguel.DTO.Response.CarroResponse;
+import com.CSplashAluguel.DTO.Response.MapsResponse;
 import com.CSplashAluguel.Model.Carro;
 import com.CSplashAluguel.Model.Enum.StatusCarro;
 import com.CSplashAluguel.Repository.CarroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +25,8 @@ public class CarroService {
     @Autowired
     private CarroRepository carroRepository;
 
-
+    @Autowired
+    private MapsService mapsService;
 
 
     public CarroResponse cadastrarCarro(CarroRequest request, MultipartFile imagen) throws IOException {
@@ -33,7 +36,7 @@ public class CarroService {
             throw new IllegalArgumentException("A placa do Carro ja existe");
         }
 
-
+//Criar um ficheiro
         String pasta="upload/carros/";
         Files.createDirectories(Paths.get(pasta));
         String nomeDoArquivo =UUID.randomUUID() + "_"+ imagen.getOriginalFilename();
@@ -41,6 +44,11 @@ public class CarroService {
 
         Files.write(caminho, imagen.getBytes());
 
+        System.out.println("Salvando em: " + caminho.toAbsolutePath());
+//1. O Java chama a API de mapas enviando o texto do endereço
+//        // A API externa vai traduzir o texto em números de GPS
+
+        MapsResponse maps=mapsService.buscar(request.endereco());
         Carro carro=new Carro();
         carro.setCategoria(request.categoria());
         carro.setMarca(request.marca());
@@ -48,9 +56,13 @@ public class CarroService {
         carro.setModelo(request.modelo());
         carro.setAno(request.ano());
         carro.setPlaca(request.placa());
+        carro.setEndereco(request.endereco());
         carro.setImagemUrl(pasta + nomeDoArquivo);
         carro.setPrecoDia(request.preco());
         carro.setStatusCarro(StatusCarro.LIVRE);
+
+        carro.setLat(maps.lat());
+        carro.setLongi(maps.lon());
 
         return toResponse(carroRepository.save(carro));
 
@@ -58,7 +70,8 @@ public class CarroService {
 
     public List<CarroResponse> listarCarros(){
 
-        return carroRepository.findAll().stream().map(this::toResponse).toList();
+        Sort sort= Sort.by("nome").descending().and(Sort.by("preco").ascending());
+        return carroRepository.findAll(sort).stream().map(this::toResponse).toList();
     }
     public CarroResponse listarPorId(UUID id){
         Carro carro= carroRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Id não Encontrado"));
@@ -76,7 +89,8 @@ public class CarroService {
         carro.setModelo(request.modelo());
         carro.setAno(request.ano());
         carro.setPlaca(request.placa());
-        carro.setImagemUrl(request.imagemUrl());
+        carro.setEndereco(request.endereco());
+
         carro.setPrecoDia(request.preco());
         carro.setStatusCarro(StatusCarro.LIVRE);
 
@@ -93,10 +107,11 @@ public class CarroService {
                 carro.getId(),
                 carro.getCategoria(),
                 carro.getMarca(),
-                carro.getModelo(),
                 carro.getCor(),
+                carro.getModelo(),
                 carro.getAno(),
                 carro.getPlaca(),
+                carro.getEndereco(),
                 carro.getImagemUrl(),
                 carro.getPrecoDia(),
                 carro.getStatusCarro()

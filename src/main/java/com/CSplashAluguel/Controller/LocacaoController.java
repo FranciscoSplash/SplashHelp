@@ -1,5 +1,6 @@
 package com.CSplashAluguel.Controller;
 
+import com.CSplashAluguel.DTO.Request.CanccelarLocacaoRequest;
 import com.CSplashAluguel.DTO.Request.LocacaoRequest;
 import com.CSplashAluguel.DTO.Request.RetirarRequest;
 import com.CSplashAluguel.DTO.Response.LocacaoResponse;

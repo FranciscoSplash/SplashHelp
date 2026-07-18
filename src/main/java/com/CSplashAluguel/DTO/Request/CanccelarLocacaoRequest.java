@@ -1,4 +1,4 @@
-package com.CSplashAluguel.Controller;
+package com.CSplashAluguel.DTO.Request;
 
 import com.CSplashAluguel.Model.Enum.StatusLocacao;
 

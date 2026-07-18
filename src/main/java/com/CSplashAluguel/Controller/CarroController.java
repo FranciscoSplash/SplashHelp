@@ -3,6 +3,8 @@ package com.CSplashAluguel.Controller;
 
 import com.CSplashAluguel.DTO.Request.CarroRequest;
 import com.CSplashAluguel.DTO.Response.CarroResponse;
+import com.CSplashAluguel.Model.Carro;
+import com.CSplashAluguel.Service.CarroProximoService;
 import com.CSplashAluguel.Service.CarroService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -25,6 +27,9 @@ public class CarroController {
     @Autowired
     private CarroService carroService;
 
+    @Autowired
+    private CarroProximoService carroProximoService;
+
 
     @GetMapping
 
@@ -39,12 +44,19 @@ public class CarroController {
     public ResponseEntity<CarroResponse>listarPorId(@PathVariable UUID id){
         return new ResponseEntity<>(carroService.listarPorId(id),HttpStatus.OK);
     }
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping("/proximos")
+    public ResponseEntity <List<CarroResponse>>listarCarrosProximos(@RequestParam Double lat, @RequestParam Double longi, @RequestParam(defaultValue = "10.0") Double raioMaximo){
+                List<CarroResponse>listarCarros =carroProximoService.buscarCarroProximo(lat,longi,raioMaximo);
+        return  ResponseEntity.ok(listarCarros);
+    }
 
-    @Operation(summary = "Criar", description = "Cadastrar carros")
-    public ResponseEntity<CarroResponse>criarCarro(@RequestPart("request")
-                                                       @Valid CarroRequest request, @RequestPart("imagem") MultipartFile imagem) throws IOException {
-        return new ResponseEntity<>(carroService.cadastrarCarro(request, imagem),HttpStatus.CREATED);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CarroResponse> criarCarro(
+            @ModelAttribute CarroRequest request,
+            @RequestParam("imagem") MultipartFile imagem) throws IOException {
+
+        CarroResponse resposta = carroService.cadastrarCarro(request, imagem);
+        return new ResponseEntity<>(resposta, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -54,10 +66,12 @@ public class CarroController {
         return new ResponseEntity<>(carroService.atualizarCarro(id,request),HttpStatus.ACCEPTED);
     }
     @DeleteMapping("/{id}")
-
     @Operation(summary = "apagar", description = "Apagar carros por id")
     public ResponseEntity<Void>apagarCarro(@PathVariable  UUID id){
        carroService.apgarCarro(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-}
+
+
+    }
+

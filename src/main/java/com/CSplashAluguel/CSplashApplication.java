@@ -8,6 +8,7 @@ public class CSplashApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CSplashApplication.class, args);
+
 	}
 
 }

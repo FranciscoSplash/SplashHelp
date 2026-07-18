@@ -1,6 +1,6 @@
 package com.CSplashAluguel.Service;
 
-import com.CSplashAluguel.Controller.CanccelarLocacaoRequest;
+import com.CSplashAluguel.DTO.Request.CanccelarLocacaoRequest;
 import com.CSplashAluguel.DTO.Request.LocacaoRequest;
 import com.CSplashAluguel.DTO.Request.RetirarRequest;
 import com.CSplashAluguel.DTO.Response.LocacaoResponse;
@@ -10,12 +10,10 @@ import com.CSplashAluguel.Model.Locacao;
 import com.CSplashAluguel.Model.Pagamento;
 import com.CSplashAluguel.Model.Usuario;
 import com.CSplashAluguel.Repository.*;
-import com.clinica.CSplash.Model.*;
 import com.CSplashAluguel.Model.Enum.StatusCarro;
 import com.CSplashAluguel.Model.Enum.StatusLocacao;
 import com.CSplashAluguel.Model.Enum.StatusPagamento;
 import com.CSplashAluguel.Model.Enum.StatusUsuario;
-import com.clinica.CSplash.Repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

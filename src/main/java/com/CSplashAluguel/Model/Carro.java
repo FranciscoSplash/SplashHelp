@@ -43,12 +43,18 @@ public class Carro {
     @NotNull(message = "Campo obrigatorio")
     private BigDecimal precoDia;
 
+    // O endereço em texto que o usuário digitou
+    @NotNull(message = "Campo obrigatorio")
+    private String endereco;
+
     private String imagemUrl;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Campo obrigatorio")
     private StatusCarro statusCarro;
 
+    private Double lat;
+    private Double longi;
 
 
 }

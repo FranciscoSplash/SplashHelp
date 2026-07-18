@@ -1,5 +1,6 @@
 package com.CSplashAluguel.Security;
 
+import com.CSplashAluguel.Model.Usuario;
 import com.CSplashAluguel.Repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class JWTTokens extends OncePerRequestFilter {
@@ -30,11 +32,11 @@ public class JWTTokens extends OncePerRequestFilter {
         if(token !=null){
             var subjet = tokenService.validarToken(token);
             if(!subjet.isEmpty()){
-                UserDetails user=usuarioRepository.findByEmail(subjet);
+                Optional<Usuario> user=usuarioRepository.findByEmail(subjet);
 
 
-                if (user != null){
-                    var autenticacao=new UsernamePasswordAuthenticationToken(user, null,user.getAuthorities());
+                if (user.isPresent()){
+                    var autenticacao=new UsernamePasswordAuthenticationToken(user.get(), null,user.get().getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(autenticacao);
                 }
 

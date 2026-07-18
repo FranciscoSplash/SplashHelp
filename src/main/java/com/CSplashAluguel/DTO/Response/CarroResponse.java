@@ -14,6 +14,7 @@ public record CarroResponse(
         String modelo,
         Integer ano,
         String placa,
+        String endereco,
         String imagemUrl,
         BigDecimal preco,
         StatusCarro statusCarro

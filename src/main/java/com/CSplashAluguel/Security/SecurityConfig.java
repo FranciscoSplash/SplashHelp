@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 @EnableWebSecurity
@@ -29,12 +31,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/cadastrar", "/api/auth/login",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/carro/proximos").permitAll()
+
+                        // LEITURA para qualquer usuário autenticado (cliente E proprietário)
+                        .requestMatchers(HttpMethod.GET, "/api/carro/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/Categoria/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/locacao/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/avaliacao/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/usuario/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/usuario/{id}").authenticated()
 
 
                         // AUTORIZAÇÃO DO CLIENTE
@@ -56,13 +69,14 @@ public class SecurityConfig {
                         //PERMISSÕES DO PROPRIETARIO
 
                         .requestMatchers(HttpMethod.PUT, "/api/locacao/{id}/retirar").hasAnyAuthority("ADMIN", "USER_Prop")
-                        .requestMatchers(HttpMethod.POST, "/api/Documentacao").hasAnyAuthority("ADMIN", "USER_Prop")
-                        .requestMatchers(HttpMethod.GET, "/api/Documentacao/{id}").hasAnyAuthority("ADMIN", "USER_Prop")
-                        .requestMatchers(HttpMethod.DELETE, "/api/Documentacao/{id}").hasAnyAuthority("ADMIN", "USER_Prop")
-
+                        .requestMatchers(HttpMethod.POST, "/api/carro").hasAnyAuthority("ADMIN", "USER_Prop")
+                        .requestMatchers(HttpMethod.PUT, "/api/carro/{id}").hasAnyAuthority("ADMIN", "USER_Prop")
+                        .requestMatchers(HttpMethod.DELETE, "/api/carro/{id}").hasAnyAuthority("ADMIN", "USER_Prop")
+                        .requestMatchers("/api/Documentacao/**").hasAnyAuthority("ADMIN", "USER_Prop")
                         .requestMatchers(HttpMethod.POST, "/api/carro").hasAnyAuthority("ADMIN", "USER_Prop")
                         .requestMatchers(HttpMethod.GET, "/api/carro/{id}").hasAnyAuthority("ADMIN", "USER_Prop")
                         .requestMatchers(HttpMethod.DELETE, "/api/carro/{id}").hasAnyAuthority("ADMIN", "USER_Prop")
+
                         .anyRequest().hasAuthority("ADMIN"))
                 .addFilterBefore(jwtTokens, UsernamePasswordAuthenticationFilter.class).build();
 
@@ -86,7 +100,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder()
+    {
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public RestClient.Builder restbuilder(){
+        return RestClient.builder();
     }
 }
