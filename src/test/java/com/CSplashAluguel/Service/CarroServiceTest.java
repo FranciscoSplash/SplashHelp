@@ -194,7 +194,7 @@ class CarroServiceTest {
     class Atualizar{
         @Test
         @DisplayName("atualizar carro")
-        void mostrarAtualiacao(){
+        void mostrarAtualizacao(){
 
             UUID id = UUID.randomUUID();
             Categoria categoria = new Categoria();
@@ -380,16 +380,17 @@ class ListarPorIdErro{
         @DisplayName("Apagar")
         void mostarApagos(){
 
-            UUID id=UUID.randomUUID();
+            UUID id =UUID.randomUUID();
+            Carro carro=new Carro();
+
+            when(carroRepository.findById(id)).thenReturn(Optional.of(carro));
             carroService.apgarCarro(id);
 
 
-            verify(carroRepository).deleteById(id);
+            verify(carroRepository).delete(carro);
 
 
 
-
-            assertEquals(id, uuidArgumentCaptor.getValue());
         }
     }
 
