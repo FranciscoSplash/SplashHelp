@@ -7,6 +7,7 @@ import com.CSplashAluguel.Model.Categoria;
 import com.CSplashAluguel.Model.Enum.StatusCarro;
 import com.CSplashAluguel.Repository.CarroRepository;
 import com.CSplashAluguel.Model.Carro;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -237,6 +238,34 @@ class CarroServiceTest {
             verify(carroRepository).save(any(Carro.class));
         }
     }
+
+    @Nested
+    class AtualizarErros{
+        @Test
+        void mostarAtualizarErros(){
+            UUID id= UUID.randomUUID();
+            Categoria categoria=new Categoria();
+
+            CarroRequest request= new CarroRequest(
+                    categoria,
+                    "BMW",
+                    "preta",
+                    "X6",
+                    2026,
+                    "ABC1D23",
+                    new BigDecimal("300"),
+                    "Rua Speers",
+                    StatusCarro.LIVRE
+            );
+
+            when(carroRepository.findById(id)).thenReturn(Optional.empty());
+
+            EntityNotFoundException exception= assertThrows(EntityNotFoundException.class,()
+                    ->carroService.atualizarCarro(id, request));
+
+            assertEquals("Id inexistente", exception.getMessage());
+        }
+    }
     @Nested
     class ListarCarros{
 
@@ -263,13 +292,29 @@ class CarroServiceTest {
 
             var response = carroService.listarCarros();
 
+            verify(carroRepository).findAll(any(Sort.class));
+
             assertEquals(1, response.size());
             assertEquals("Ferrari", response.get(0).marca());
             assertEquals("F8 Spider", response.get(0).modelo());
             assertEquals("Preta", response.get(0).cor());
         }
     }
+    @Nested
+    class ListarErros{
+        @Test
+        void mostrarErro(){
 
+            when(carroRepository.findAll(any(Sort.class)))
+                    .thenThrow(new RuntimeException("Lista vazia" ));
+
+            RuntimeException Exception =assertThrows(RuntimeException.class,()
+            -> carroService.listarCarros());
+
+            assertEquals("Lista vazia", Exception.getMessage());
+
+        }
+    }
     @Nested
     class ListarPorId{
 
@@ -294,11 +339,11 @@ class CarroServiceTest {
             carro.setPrecoDia(new BigDecimal("300"));
             carro.setStatusCarro(StatusCarro.LIVRE);
 
-            doReturn(Optional.of(carro)).when(carroRepository).findById(uuidArgumentCaptor.capture());
+           when(carroRepository.findById(id)).thenReturn(Optional.of(carro));
 
 
-            CarroResponse response= carroService.listarPorId(uuidArgumentCaptor.capture());
-            verify(carroRepository).findById(uuidArgumentCaptor.capture());
+            CarroResponse response= carroService.listarPorId(id);
+            verify(carroRepository).findById(id);
 
 
             assertNotNull(response);
@@ -314,7 +359,21 @@ class CarroServiceTest {
 
         }
     }
+@Nested
+class ListarPorIdErro{
+        @Test void
+        mostrarErro(){
 
+            UUID id = UUID.randomUUID();
+
+            when(carroRepository.findById(id)).thenReturn(Optional.empty());
+
+            EntityNotFoundException Exception = assertThrows(EntityNotFoundException.class,()->
+                    carroService.listarPorId(id));
+
+            assertEquals("Id não Encontrado", Exception.getMessage());
+    }
+}
     @Nested
     class Apagar{
         @Test
@@ -325,12 +384,29 @@ class CarroServiceTest {
             carroService.apgarCarro(id);
 
 
-            verify(carroRepository).deleteById(uuidArgumentCaptor.capture());
+            verify(carroRepository).deleteById(id);
 
 
 
 
             assertEquals(id, uuidArgumentCaptor.getValue());
+        }
+    }
+
+
+    @Nested
+    class DeletarPorIdErro{
+        @Test void
+        mostrarApagosErro(){
+
+            UUID id = UUID.randomUUID();
+
+            when(carroRepository.findById(id)).thenReturn(Optional.empty());
+
+            EntityNotFoundException Exception = assertThrows(EntityNotFoundException.class,()->
+                    carroService.apgarCarro(id));
+
+            assertEquals("Id inexistente", Exception.getMessage());
         }
     }
 
